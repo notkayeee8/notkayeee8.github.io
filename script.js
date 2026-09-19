@@ -56,3 +56,26 @@ if(form){form.onsubmit=e=>{
   form.reset()
   setTimeout(()=>msg.textContent='',4000)
 }}
+const dropdowns=document.querySelectorAll('.dropdown')
+function closeAllDropdowns(){
+  dropdowns.forEach(d=>{
+    d.querySelector('.dropdown-menu').classList.remove('show')
+    d.querySelector('.dropdown-btn').classList.remove('open')
+  })
+}
+dropdowns.forEach(d=>{
+  const btn=d.querySelector('.dropdown-btn'),menu=d.querySelector('.dropdown-menu')
+  btn.addEventListener('click',e=>{
+    e.stopPropagation()
+    const wasOpen=menu.classList.contains('show')
+    closeAllDropdowns()
+    if(!wasOpen){menu.classList.toggle('show');btn.classList.toggle('open')}
+  })
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    menu.classList.remove('show');btn.classList.remove('open')
+  }))
+})
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.dropdown')) closeAllDropdowns()
+})
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeAllDropdowns()})
